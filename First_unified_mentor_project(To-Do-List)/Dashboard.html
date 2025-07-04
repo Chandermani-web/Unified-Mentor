@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do_list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="notification-container"></div>
+
+    <header>
+        <div class="logo">
+            <h1>To Do List</h1>
+        </div>
+        <div class="header-items">
+            <div class="navbar-total-task">
+                <i class="ri-check-line"></i>
+                <h2>0</h2>
+                <label>Total Task</label>
+            </div>
+            <div class="navbar-completed-tasks">
+                <i class="ri-check-double-line"></i>
+                <h2>0</h2>
+                <label>Completed</label>
+            </div>
+            <div class="navbar-success-rate">
+                <i class="ri-percent-line"></i>
+                <h2>0%</h2>
+                <label>Success Rate</label>
+            </div>
+        </div>
+    </header>
+
+
+    <main class="dashboard-main">
+    <div class="dashboard-grid">
+      <!-- Quick Actions Card -->
+      <div class="dashboard-card quick-actions">
+        <h2><i class="ri-add-line"></i> Quick Actions</h2>
+        <div class="action-buttons">
+          <button class="action-btn primary" onclick="window.location.href='AddTask.html'">
+            <i class="ri-add-line"></i>
+            Add New Task
+          </button>
+          <button class="action-btn secondary" onclick="window.location.href='Alltask.html'">
+            <i class="ri-list-check"></i>
+            View All Tasks
+          </button>
+          <button class="action-btn secondary" onclick="window.location.href='CompleteTask.html'">
+            <i class="ri-check-double-line"></i>
+            Completed Tasks
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Tasks Card -->
+      <div class="dashboard-card recent-tasks">
+        <h2><i class="ri-time-line"></i> Recent Tasks</h2>
+        <div id="recent-tasks-list" class="recent-tasks-list">
+          <!-- Recent tasks will be populated here -->
+           No tasks yet. Create your first task!
+        </div>
+        <button class="view-all-btn" onclick="window.location.href='Alltask.html'">
+          View All Tasks <i class="ri-arrow-right-line"></i>
+        </button>
+      </div>
+
+      <!-- Progress Overview Card -->
+      <div class="dashboard-card progress-overview">
+        <h2><i class="ri-bar-chart-line"></i> Progress Overview</h2>
+        <div class="progress-stats">
+          <div class="progress-item">
+            <div class="progress-label" style="color: aqua;">Normal Priority</div>
+            <div class="progress-bar">
+              <div class="progress-fill normal" id="normal-progress"></div>
+            </div>
+            <span id="normal-count">0</span>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label" style="color: orange;">Intermediate Priority</div>
+            <div class="progress-bar">
+              <div class="progress-fill intermediate" id="intermediate-progress"></div>
+            </div>
+            <span id="intermediate-count">0</span>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label" style="color: red;">Important Priority</div>
+            <div class="progress-bar">
+              <div class="progress-fill important" id="important-progress"></div>
+            </div>
+            <span id="important-count">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="dashboard-card quick-stats">
+        <h2><i class="ri-dashboard-line"></i> Quick Stats</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon pending">
+              <i class="ri-time-line" style="background-color: orange;"></i>
+            </div>
+            <div class="stat-info">
+              <span id="pending-count">0</span>
+              <label>Pending</label>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon today">
+              <i class="ri-calendar-line" style="background-color: skyblue;"></i>
+            </div>
+            <div class="stat-info">
+              <span id="today-count">0</span>
+              <label>Today</label>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon overdue">
+              <i class="ri-error-warning-line" style="background-color: coral;"></i>
+            </div>
+            <div class="stat-info">
+              <span id="overdue-count">0</span>
+              <label>Overdue</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+    <footer>
+       <button class="nav-btn active" onclick="window.location.href='Dashboard.html'">
+      <i class="ri-home-line"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='AddTask.html'">
+      <i class="ri-add-line"></i>
+      <span>Add Task</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='Alltask.html'">
+      <i class="ri-list-check"></i>
+      <span>All Tasks</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='CompleteTask.html'">
+      <i class="ri-check-double-line"></i>
+      <span>Completed</span>
+    </button> 
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

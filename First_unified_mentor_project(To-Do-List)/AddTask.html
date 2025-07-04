@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
+      integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="window.location.href='Dashboard.html'">
+          <i class="ri-arrow-left-line"></i>
+          Back to Dashboard
+        </button>
+        <h1 class="page-title">Add New Task</h1>
+        <div class="header-actions">
+          <button class="btn secondary" onclick="clearForm()">
+            <i class="ri-refresh-line"></i>
+            Clear Form
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="addtask-container">
+      <div class="addtask-container-form">
+        <div class="addtask-heading">
+          <h2><i class="ri-add-line"></i> Create New Task</h2>
+          <p>Fill in the details below to create a new task</p>
+        </div>
+
+        <div class="addtask-form">
+          <div class="form-group">
+            <div class="task-title-input-label">
+              <label for="title"
+                ><i class="ri-edit-line"></i> Task Title*</label
+              >
+              <input
+                type="text"
+                placeholder="Enter task title..."
+                id="title"
+                required
+              />
+              <div class="char-count">
+                <span class="title-count">0</span>/100
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="task-desc-input-label">
+              <label for="description"
+                ><i class="ri-file-text-line"></i> Description*</label
+              >
+              <textarea
+                name="description"
+                id="description"
+                row="4"
+                placeholder="Describe your task in detail..."
+                maxlength="500"
+                required
+              ></textarea>
+              <div class="char-count">
+                <span class="desc-count">0</span>/500
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="priority">
+                <i class="ri-flag-line"></i>
+                Priority Level
+              </label>
+              <select name="priority" id="priority">
+                <option value="Normal">Normal</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Important">Important</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="category">
+                <i class="ri-folder-line"></i>
+                Category
+              </label>
+              <select name="category" id="category">
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+                <option value="Study">Study</option>
+                <option value="Health">Health</option>
+                <option value="Finance">Finance</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="calendra">
+                <i class="ri-calendra-line"></i>
+                Due Date
+              </label>
+              <input
+                type="date"
+                placeholder="DD-MM-YYYY"
+                id="calendra"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="task-time">
+                <i class="ri-time-line"></i>
+                Due Time
+              </label>
+              <input type="time" id="task-time" name="dueTime" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="task-notes">
+              <i class="ri-sticky-note-line"></i>
+              Additional Notes
+            </label>
+            <textarea
+              name="notes"
+              id="task-notes"
+              placeholder="Any Additional notes or reminders..."
+              rows="3"
+              maxlength="300"
+            ></textarea>
+            <div class="char-count">
+              <span class="notes-count">0</span>/300
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn secondary"
+              onclick="window.location.href='./Dashboard.html'"
+            >
+              <i class="ri-close-line"></i>
+              Cancel
+            </button>
+
+            <button type="submit" class="btn primary submit-task-button">
+              <i class="ri-add-line"></i>
+              Create Task
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-card">
+        <h3><i class="ri-lightbulb-line"></i> Quick Tips</h3>
+        <ul class="tips-list">
+          <li>Use clear, specific titles for better organization</li>
+          <li>Set realistic due dates to avoid overdue tasks</li>
+          <li>Use categories to group related tasks</li>
+          <li>Important tasks should be prioritized accordingly</li>
+          <li>Add detailed descriptions for complex tasks</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <footer class="addtask-footer">
+      <button
+        class="nav-btn active"
+        onclick="window.location.href='Dashboard.html'"
+      >
+        <i class="ri-home-line"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='AddTask.html'">
+        <i class="ri-add-line"></i>
+        <span>Add Task</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='Alltask.html'">
+        <i class="ri-list-check"></i>
+        <span>All Tasks</span>
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='CompleteTask.html'"
+      >
+        <i class="ri-check-double-line"></i>
+        <span>Completed</span>
+      </button>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

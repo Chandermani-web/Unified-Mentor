@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Completed Tasks - Smart Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" crossorigin="anonymous" />
+</head>
+<body>
+  <!-- Notification Container -->
+  <div id="notification-container"></div>
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <button class="back-btn" onclick="window.location.href='./Dashboard.html'">
+        <i class="ri-arrow-left-line"></i>
+        Back to Dashboard
+      </button>
+      <h1 class="page-title">Completed Tasks</h1>
+      <div class="header-actions">
+        <button class="btn secondary" onclick="exportCompletedTasks()">
+          <i class="ri-download-line"></i>
+          Export
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="completed-tasks-main">
+    <!-- Achievement Section -->
+    <div class="achievement-section">
+      <div class="achievement-card">
+        <div class="achievement-header">
+          <h2><i class="ri-medal-line"></i> Your Achievements</h2>
+          <p>Celebrate your completed tasks and milestones</p>
+        </div>
+        <div class="achievement-stats">
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <i class="ri-trophy-line"></i>
+            </div>
+            <div class="achievement-info">
+              <span id="total-completed">0</span>
+              <label>Total Completed</label>
+            </div>
+          </div>
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <i class="ri-fire-line"></i>
+            </div>
+            <div class="achievement-info">
+              <span id="streak-days">0</span>
+              <label>Day Streak</label>
+            </div>
+          </div>
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <i class="ri-star-line"></i>
+            </div>
+            <div class="achievement-info">
+              <span id="this-week">0</span>
+              <label>This Week</label>
+            </div>
+          </div>
+          <div class="achievement-item">
+            <div class="achievement-icon">
+              <i class="ri-calendar-line"></i>
+            </div>
+            <div class="achievement-info">
+              <span id="this-month">0</span>
+              <label>This Month</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completion Timeline -->
+    <div class="timeline-section">
+      <div class="timeline-card">
+        <h2><i class="ri-time-line"></i> Completion Timeline</h2>
+        <div class="timeline-chart">
+          <canvas id="completion-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="controls-section">
+      <div class="filters-card">
+        <div class="filter-group">
+          <label for="time-filter">
+            <i class="ri-time-line"></i>
+            Time Period
+          </label>
+          <select id="time-filter">
+            <option value="all">All Time</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="priority-filter">
+            <i class="ri-flag-line"></i>
+            Priority
+          </label>
+          <select id="priority-filter">
+            <option value="all">All Priorities</option>
+            <option value="Normal">Normal</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Important">Important</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="category-filter">
+            <i class="ri-folder-line"></i>
+            Category
+          </label>
+          <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+            <option value="Health">Health</option>
+            <option value="Finance">Finance</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <button class="clear-filters-btn" onclick="clearFilters()">
+          <i class="ri-refresh-line"></i>
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="search-card">
+        <div class="search-box">
+          <i class="ri-search-line"></i>
+          <input type="text" id="search-input" placeholder="Search completed tasks..." />
+          <button class="clear-search" onclick="clearSearch()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Tasks List -->
+    <div class="completed-tasks-section">
+      <div class="tasks-header">
+        <h2>Completed Tasks</h2>
+        <div class="view-options">
+          <button class="view-btn active" data-view="list">
+            <i class="ri-list-check"></i>
+            List
+          </button>
+          <button class="view-btn" data-view="grid">
+            <i class="ri-grid-line"></i>
+            Grid
+          </button>
+        </div>
+      </div>
+
+      <div id="completed-tasks-container" class="completed-tasks-container list-view">
+        <!-- Completed tasks will be populated here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">
+          <i class="ri-check-double-line"></i>
+        </div>
+        <h3>No completed tasks yet</h3>
+        <p>Start completing tasks to see your achievements here</p>
+        <button class="btn primary" onclick="window.location.href='Alltask.html'">
+          <i class="ri-list-check"></i>
+          View All Tasks
+        </button>
+      </div>
+    </div>
+
+    <!-- Motivational Quotes -->
+    <div class="motivation-section">
+      <div class="motivation-card">
+        <div class="quote-content">
+          <i class="ri-double-quotes-l"></i>
+          <p id="motivational-quote">Success is not final, failure is not fatal: it is the courage to continue that counts.</p>
+          <span id="quote-author">- Winston Churchill</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Navigation Footer -->
+    <footer>
+       <button class="nav-btn active" onclick="window.location.href='Dashboard.html'">
+      <i class="ri-home-line"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='AddTask.html'">
+      <i class="ri-add-line"></i>
+      <span>Add Task</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='Alltask.html'">
+      <i class="ri-list-check"></i>
+      <span>All Tasks</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='CompleteTask.html'">
+      <i class="ri-check-double-line"></i>
+      <span>Completed</span>
+    </button> 
+    </footer>
+
+  <!-- Task Detail Modal -->
+  <div id="task-modal" class="task-modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Completed Task Details</h3>
+        <button class="close-btn" onclick="closeTaskModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Task details will be populated here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeTaskModal()">Close</button>
+        <button class="btn warning" onclick="undoTaskCompletion()">
+          <i class="ri-arrow-go-back-line"></i>
+          Mark as Pending
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Tasks - Smart Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" crossorigin="anonymous" />
+</head>
+<body>
+  <!-- Notification Container -->
+  <div id="notification-container"></div>
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <button class="back-btn" onclick="window.location.href='./Dashboard.html'">
+        <i class="ri-arrow-left-line"></i>
+        Back to Dashboard
+      </button>
+      <h1 class="page-title">All Tasks</h1>
+      <div class="header-actions">
+        <button class="btn primary" onclick="window.location.href='./AddTask.html'">
+          <i class="ri-add-line"></i>
+          Add New Task
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="view-tasks-main">
+    <!-- Filters and Controls -->
+    <div class="controls-section">
+      <div class="filters-card">
+        <div class="filter-group">
+          <label for="status-filter">
+            <i class="ri-filter-line"></i>
+            Status
+          </label>
+          <select id="status-filter">
+            <option value="all">All Tasks</option>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="priority-filter">
+            <i class="ri-flag-line"></i>
+            Priority
+          </label>
+          <select id="priority-filter">
+            <option value="all">All Priorities</option>
+            <option value="Normal">Normal</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Important">Important</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="category-filter">
+            <i class="ri-folder-line"></i>
+            Category
+          </label>
+          <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+            <option value="Health">Health</option>
+            <option value="Finance">Finance</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="sort-by">
+            <i class="ri-sort-desc"></i>
+            Sort By
+          </label>
+          <select id="sort-by">
+            <option value="created">Date Created</option>
+            <option value="due">Due Date</option>
+            <option value="priority">Priority</option>
+            <option value="title">Title</option>
+          </select>
+        </div>
+
+        <button class="clear-filters-btn" onclick="clearFilters()">
+          <i class="ri-refresh-line"></i>
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="search-card">
+        <div class="search-box">
+          <i class="ri-search-line"></i>
+          <input type="text" id="search-input" placeholder="Search tasks..." />
+          <button class="clear-search" onclick="clearSearch()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Statistics -->
+    <div class="stats-section">
+      <div class="stats-card">
+        <div class="stat-item">
+          <div class="stat-icon total">
+            <i class="ri-task-line"></i>
+          </div>
+          <div class="stat-info">
+            <span id="total-displayed">0</span>
+            <label>Tasks Shown</label>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon pending">
+            <i class="ri-time-line"></i>
+          </div>
+          <div class="stat-info">
+            <span id="pending-displayed">0</span>
+            <label>Pending</label>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon completed">
+            <i class="ri-check-double-line"></i>
+          </div>
+          <div class="stat-info">
+            <span id="completed-displayed">0</span>
+            <label>Completed</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks List -->
+    <div class="tasks-section">
+      <div class="tasks-header">
+        <h2>Task List</h2>
+        <div class="view-options">
+          <button class="view-btn active" data-view="list">
+            <i class="ri-list-check"></i>
+            List
+          </button>
+          <button class="view-btn" data-view="grid">
+            <i class="ri-grid-line"></i>
+            Grid
+          </button>
+        </div>
+      </div>
+
+      <div id="tasks-container" class="tasks-container list-view">
+        <!-- Tasks will be populated here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">
+          <i class="ri-task-line"></i>
+        </div>
+        <h3>No tasks found</h3>
+        <p>Try adjusting your filters or create a new task</p>
+        <button class="btn primary" onclick="window.location.href='AddTask.html'">
+          <i class="ri-add-line"></i>
+          Create New Task
+        </button>
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Navigation Footer -->
+    <footer>
+       <button class="nav-btn active" onclick="window.location.href='Dashboard.html'">
+      <i class="ri-home-line"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='AddTask.html'">
+      <i class="ri-add-line"></i>
+      <span>Add Task</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='Alltask.html'">
+      <i class="ri-list-check"></i>
+      <span>All Tasks</span>
+    </button>
+    <button class="nav-btn" onclick="window.location.href='CompleteTask.html'">
+      <i class="ri-check-double-line"></i>
+      <span>Completed</span>
+    </button> 
+    </footer>
+
+  <!-- Task Detail Modal -->
+  <div id="task-modal" class="task-modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Task Details</h3>
+        <button class="close-btn" onclick="closeTaskModal()">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Task details will be populated here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeTaskModal()">Close</button>
+        <button class="btn primary" onclick="editCurrentTask()">
+          <i class="ri-edit-line"></i>
+          Edit Task
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="script.js"></script>
+</body>
+</html> 
