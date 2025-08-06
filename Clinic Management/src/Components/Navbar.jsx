@@ -3,15 +3,22 @@ import { Link } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import { useDispatch } from "react-redux";
 import { clearCredentials } from "../Store/Signin.Slice.js";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { app } from "../Firebase/Firebase.js";
+
+const auth = getAuth(app);
 
 const Navbar = () => {
-  const [isActive, setIsActive] = useState("dashboard");
+  const [isActive, setIsActive] = useState(
+    JSON.parse(sessionStorage.getItem("ActiveNavLink")) || "dashboard"
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(clearCredentials());
-    window.location.href = "/"; // Redirect to Signin page after logout
+    signOut(auth);
+    window.location.href = "/";
   };
 
   const toggleMenu = () => {
@@ -19,10 +26,26 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: "/Clinic-Management/dashboard", name: "dashboard", label: "Dashboard" },
-    { path: "/Clinic-Management/assign-token", name: "assign-token", label: "Assign Token" },
-    { path: "/Clinic-Management/create-bill", name: "create-bill", label: "Create Bill" },
-    { path: "/Clinic-Management/patient-records", name: "patient-records", label: "Patient Records" },
+    {
+      path: "/Clinic-Management/dashboard",
+      name: "dashboard",
+      label: "Dashboard",
+    },
+    {
+      path: "/Clinic-Management/assign-token",
+      name: "assign-token",
+      label: "Assign Token",
+    },
+    {
+      path: "/Clinic-Management/create-bill",
+      name: "create-bill",
+      label: "Create Bill",
+    },
+    {
+      path: "/Clinic-Management/patient-records",
+      name: "patient-records",
+      label: "Patient Records",
+    },
   ];
 
   return (
@@ -31,34 +54,40 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-xl md:text-2xl font-bold text-violet-600">Clinic Management</h1>
+            <h1 className="text-xl md:text-xl font-bold text-black">
+              <i className="ri-nurse-fill text-blue-700 text-3xl"></i>
+              Clinic Management
+            </h1>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-            <div className="flex space-x-4 lg:space-x-8">
+            <div className="flex space-x-4 lg:space-x-5">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  className={`px-3 py-2 rounded-md text-[13px] font-medium ${
                     isActive === link.name
                       ? "bg-blue-700 text-white"
                       : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
                   }`}
-                  onClick={() => setIsActive(link.name)}
+                  onClick={() => {
+                    setIsActive(link.name);
+                    sessionStorage.setItem("ActiveNavLink", JSON.stringify(link.name));
+                  }}
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <button
-              className="ml-4 bg-gray-100 text-black border-2 py-1 px-3 rounded-xl hover:bg-red-700 hover:text-white transition duration-200 flex items-center"
-              onClick={handleLogout}
-            >
-              <i className="ri-logout-box-line mr-1"></i>Log Out
-            </button>
           </div>
+          <button
+            className="ml-4 bg-gray-100 text-black border-2 border-gray-300 py-1 px-2 rounded-sm hover:bg-red-700 hover:text-white transition duration-200 flex items-center text-[13px]"
+            onClick={handleLogout}
+          >
+            <i className="ri-logout-box-line mr-1"></i>Log Out
+          </button>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -74,7 +103,11 @@ const Navbar = () => {
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
-              <i className={`ri-${isMenuOpen ? "close-line" : "menu-line"} text-2xl`}></i>
+              <i
+                className={`ri-${
+                  isMenuOpen ? "close-line" : "menu-line"
+                } text-2xl`}
+              ></i>
             </button>
           </div>
         </div>

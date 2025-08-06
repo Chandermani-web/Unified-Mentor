@@ -20,6 +20,7 @@ const githubprovider = new GithubAuthProvider();
 
 const Signup = () => {
   const [activeRole, setActiveRole] = useState("doctor");
+  const [loading, setloading] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -30,58 +31,51 @@ const Signup = () => {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
 
     if (!formData.username.trim() || !formData.password) {
       toast.error("Please fill in all fields");
+      setloading(false);
       return;
     }
 
-    createUserWithEmailAndPassword(auth, formData.username, formData.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        toast.success(
-          `Welcome ${user.email}! You are signed in as ${activeRole}.`,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeButton: true,
-            closeOnClick: true,
-            pauseOnFocusLoss: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            onClose: () => navigate("/Clinic-Management/dashboard"),
-          }
-        );
-        console.log("User signed in:", user);
-      })
-      .then(() => {
-        navigate("/signin");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(`Error: ${errorMessage}`);
-        console.error("Error signing in:", errorCode, errorMessage);
-      });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.username,
+        formData.password
+      );
+      const user = userCredential.user;
 
-    dispatch(
-      setCredentials({
-        username: formData.username,
-        password: formData.password,
-        activeRole: activeRole,
-        isAuthenticated: true,
-      })
-    );
+      dispatch(
+        setCredentials({
+          username: formData.username,
+          password: formData.password,
+          activeRole: activeRole,
+          isAuthenticated: true,
+        })
+      );
 
-    setFormData({
-      username: "",
-      password: "",
-    });
+      toast.success(
+        `Welcome ${user.email}! You are signed in as ${activeRole}.`,
+        {
+          position: "top-right",
+          autoClose: 2000,
+          onClose: () => {
+            navigate("/complete-profile", { state: { role: activeRole } });
+          },
+        }
+      );
+
+      setFormData({ username: "", password: "" });
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
+      console.error("Error signing up:", error);
+    } finally {
+      setloading(false);
+    }
   };
 
   const handleGoogleSignUp = () => {
@@ -92,7 +86,7 @@ const Signup = () => {
           `Welcome ${user.email}! You are signed in as ${activeRole}.`,
           {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeButton: true,
             closeOnClick: true,
@@ -100,7 +94,10 @@ const Signup = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            onClose: () => navigate("/Clinic-Management/dashboard"),
+            onClose: () => {
+              // after successful createUserWithEmailAndPassword or OAuth login
+              navigate("/complete-profile", { state: { role: activeRole } });
+            },
           }
         );
         console.log("User signed in with Google:", user);
@@ -129,7 +126,10 @@ const Signup = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            onClose: () => navigate("/Clinic-Management/dashboard"),
+            onClose: () => {
+              // after successful createUserWithEmailAndPassword or OAuth login
+              navigate("/complete-profile", { state: { role: activeRole } });
+            },
           }
         );
         console.log("User signed in with Google:", user);
@@ -151,7 +151,7 @@ const Signup = () => {
       <div className="bg-white p-10 rounded-sm shadow-lg w-96 xl:w-150 flex flex-col">
         <div className="flex flex-col items-center mb-10 leading-0">
           <h2 className="text-4xl font-bold mb-6 text-center text-blue-800">
-          Clinic Management System
+            Clinic Management System
           </h2>
           <p>Create an account to access the clinic management system</p>
         </div>
@@ -220,8 +220,11 @@ const Signup = () => {
             className="w-full bg-blue-600 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition duration-200"
             type="submit"
           >
-            Sign Up As{" "}
-            {activeRole.charAt(0).toUpperCase() + activeRole.slice(1)}
+            {loading
+              ? "Sign Up..."
+              : `Sign Up As ${
+                  activeRole.charAt(0).toUpperCase() + activeRole.slice(1)
+                }`}
           </button>
         </form>
         <ToastContainer />

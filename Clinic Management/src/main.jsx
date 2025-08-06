@@ -13,12 +13,17 @@ const Dashboard = lazy(() => import("./Pages/Dashboard.jsx"));
 const AssignToken = lazy(() => import("./Pages/AssignToken.jsx"));
 const CreateBill = lazy(() => import("./Pages/CreateBill.jsx"));
 const PatientRecords = lazy(() => import("./Pages/PatientRecords.jsx"));
+const SignUpDetails = lazy(() => import("./Pages/SignUpDetails.jsx"));
 
 // Routing configuration
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Signup />,
+  },
+  {
+    path: "/complete-profile",
+    element: <SignUpDetails />
   },
   {
     path: "/signin",

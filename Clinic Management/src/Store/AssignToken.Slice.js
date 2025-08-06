@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper: Get existing tokens from localStorage
+// Get tokens from sessionStorage on load
 const getInitialToken = () => {
-  const saved = localStorage.getItem("Token");
   try {
-    return saved ? JSON.parse(saved) : [];
+    const tokenData = sessionStorage.getItem("tokens");
+    return tokenData ? JSON.parse(tokenData) : [];
   } catch (error) {
-    console.error("Error parsing Token from localStorage:", error);
+    console.error("Error parsing Token from sessionStorage:", error);
     return [];
   }
 };
@@ -19,6 +19,7 @@ const AssignTokenSlice = createSlice({
   name: "token",
   initialState,
   reducers: {
+    // Add new token
     assigntokens: (state, action) => {
       const { Assigntokendetails, TokenNumber } = action.payload;
 
@@ -26,18 +27,29 @@ const AssignTokenSlice = createSlice({
         ...Assigntokendetails,
         TokenNumber,
         date: new Date().toLocaleDateString(),
-        time: new Date(Date.now() + 90 * 60 * 1000).toLocaleTimeString(), // ✅ Corrected
+        time: new Date(Date.now()).toLocaleTimeString(),
       };
 
       state.token.push(Data);
-      localStorage.setItem("Token", JSON.stringify(state.token));
     },
+
+    // Set tokens from Firebase directly
+    setTokensFromFirebase: (state, action) => {
+      state.token = action.payload;
+
+      // Sync with sessionStorage
+      sessionStorage.setItem("tokens", JSON.stringify(action.payload));
+    },
+
+    // Clear all tokens
     removetoken: (state) => {
       state.token = [];
-      localStorage.setItem("Token", JSON.stringify([]));
+      sessionStorage.removeItem("tokens");
     },
   },
 });
 
-export const { assigntokens, removetoken } = AssignTokenSlice.actions;
+export const { assigntokens, removetoken, setTokensFromFirebase } =
+  AssignTokenSlice.actions;
+
 export default AssignTokenSlice.reducer;
