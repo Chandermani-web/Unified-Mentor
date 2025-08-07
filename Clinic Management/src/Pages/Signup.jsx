@@ -62,7 +62,7 @@ const Signup = () => {
         `Welcome ${user.email}! You are signed in as ${activeRole}.`,
         {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           onClose: () => {
             navigate("/complete-profile", { state: { role: activeRole } });
           },

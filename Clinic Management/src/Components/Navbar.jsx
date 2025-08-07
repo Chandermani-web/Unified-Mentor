@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import { useDispatch } from "react-redux";
 import { clearCredentials } from "../Store/Signin.Slice.js";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { app } from "../Firebase/Firebase.js";
 
 const auth = getAuth(app);

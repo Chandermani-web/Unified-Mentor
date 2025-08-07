@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getDatabase, ref, push, set } from "firebase/database";
 import { app } from "../Firebase/Firebase";
 import useFetchTokens from "../Utils/FetchAllToken.js";
+import 'remixicon/fonts/remixicon.css';
 
 const CreateBill = () => {
   const Totaltoken = useSelector((state) => state.token.token);
@@ -106,7 +107,7 @@ const CreateBill = () => {
     }
     
     setSaving(true);
-    if(tokenList.find((f)=> f.id === patientId)){
+    if(tokenList.find((f)=> f.TokenNumber === patientId)){
     try {
       const billData = {
         consultationFee: Number(consultationFee) || 0,
@@ -130,7 +131,7 @@ const CreateBill = () => {
       };
 
       // Save to Firebase under bills/{patientId}/{autoId}
-      const billsRef = ref(db, `assigntokens/${patientId}/bills`);
+      const billsRef = ref(db, `assigntokens/${patientId}(${patientName})/bills`);
       const newBillRef = push(billsRef);
       await set(newBillRef, billData);
 
@@ -153,12 +154,12 @@ const CreateBill = () => {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col py-10 xl:w-[80%]">
-        <h1 className="text-2xl font-bold ">Create Bill</h1>
-        <p className="text-gray-400 text-sm">
+        <h1 className="text-3xl font-bold ">Create Bill</h1>
+        <p className="text-gray-400">
           Generate bills for patient consultations and medicines
         </p>
 
-        <div className="flex flex-row-reverse gap-5 mt-10">
+        <div className="flex flex-row gap-5 mt-10">
           {/* Left Panel */}
           <div className="border border-gray-300 bg-white w-2/3 rounded-xl p-5">
             <div>
@@ -410,7 +411,7 @@ const CreateBill = () => {
           </div>
 
           {/* Right Panel */}
-          <div className="bg-white xl:w-[20%] p-5">
+          <div className="xl:w-[30%] h-[40%] p-5 flex flex-col border-1 rounded-2xl border-gray-300">
             {/* Top panel */}
             <div>
               <h1 className="text-xl font-semibold">
@@ -436,13 +437,13 @@ const CreateBill = () => {
                 <hr className="text-gray-400" />
                 <div className="flex justify-between">
                   <h1 className="font-semibold">Total Amount</h1>
-                  <h1 className="font-semibold">{totalAmount.toFixed(2)}</h1>
+                  <h1 className="font-semibold text-blue-600">{totalAmount.toFixed(2)}</h1>
                 </div>
               </div>
             </div>
 
             {/* bottom panel */}
-            <div className="bg-gray-100 rounded-sm p-3 mt-4">
+            <div className="bg-gray-100 rounded-xl p-3 mt-4">
               <h2 className="mb-2 font-semibold">Bill Information</h2>
               <div className="flex justify-between">
                 <p className="text-sm text-gray-500">Bill Date:</p>

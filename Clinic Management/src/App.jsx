@@ -31,7 +31,7 @@ const App = () => {
   }
 
   return (
-      <div className="bg-zinc-100">
+      <div>
         <Navbar />
         <Outlet  />
       </div>

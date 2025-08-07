@@ -16,13 +16,11 @@ const useFetchTokens = () => {
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const today = new Date().toLocaleDateString();
         const formattedData = Object.entries(data)
           .map(([id, value]) => ({
             id,
             ...value,
-          }))
-          .filter((token) => token.date === today);
+          }));
 
         setTokenList(formattedData);
         dispatch(setTokensFromFirebase(formattedData));

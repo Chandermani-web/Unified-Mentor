@@ -9,7 +9,13 @@ import { app } from "../Firebase/Firebase.js";
 import useFetchTokens from "../Utils/FetchAllToken.js";
 
 const AssignToken = () => {
-  const tokenList = useFetchTokens();
+  
+  // Total Token
+  const tokenlist = useFetchTokens();
+
+  // Today Token
+  const today = new Date().toLocaleDateString();
+  const tokenList = tokenlist.filter((token) => token.date === today);;
 
   const [Assigntokendetails, setAssigntokendetails] = useState({
     patientname: "",
@@ -22,7 +28,7 @@ const AssignToken = () => {
   const database = getDatabase(app);
   const dispatch = useDispatch();
 
-  const TokenNumber = tokenList.length ? tokenList.length + 1 : 1;
+  const TokenNumber = tokenlist.length ? tokenlist.length + 1 : 1;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +39,7 @@ const AssignToken = () => {
         TokenNumber: `T${TokenNumber}`,
         date: new Date().toLocaleDateString(),
         time: new Date().toLocaleTimeString(),
+        active: true,
       });
 
       dispatch(assigntokens({ Assigntokendetails, TokenNumber }));
@@ -57,8 +64,8 @@ const AssignToken = () => {
   return (
     <div className="flex justify-center h-screen">
       <div className="flex flex-col py-10 xl:w-[70%]">
-        <h1 className="text-2xl text-black font-bold">Assign Patient Token</h1>
-        <p className="text-zinc-400 text-sm">
+        <h1 className="text-3xl text-black font-bold">Assign Patient Token</h1>
+        <p className="text-zinc-400">
           Register new patients and assign them consultation tokens
         </p>
         <div className="mt-10 gap-5 flex">
@@ -182,7 +189,7 @@ const AssignToken = () => {
               <div className="col-span-2">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white w-full p-2 rounded-sm hover:bg-blue-600 transition duration-200"
+                  className="bg-blue-500 text-white w-full px-2 rounded-sm hover:bg-blue-600 transition duration-200"
                 >
                   <i className="ri-coupon-2-line mr-4"></i> Assign Token
                 </button>
@@ -220,7 +227,7 @@ const AssignToken = () => {
                     </div>
                     <div className="flex flex-col gap-5">
                       <h6
-                        className={`border-1 text-white font-semibold rounded-2xl p-1.5 text-center text-sm ${
+                        className={`border-1 text-white font-semibold rounded-2xl px-1.5 py-1 text-center text-sm ${
                           token.patientpriority?.toLowerCase() === "urgent"
                             ? "bg-red-500"
                             : token.patientpriority?.toLowerCase() === "high"

@@ -1,14 +1,7 @@
+import { toast, ToastContainer } from "react-toastify";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Required to style toast notifications
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from "firebase/auth";
-import { ToastContainer } from "react-toastify";
-import { app } from "../Firebase/Firebase"; // Adjust the import path as necessary
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "../Firebase/Firebase.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../Store/Signin.Slice.js";
@@ -16,45 +9,35 @@ import { setCredentials } from "../Store/Signin.Slice.js";
 const auth = getAuth(app);
 
 const Signin = () => {
-  const [activeRole, setActiveRole] = useState("doctor");
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
+  const [activeRole, setActiveRole] = useState("doctor");
+  const [loading, setloading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleRoleChange = (role) => {
+    setActiveRole(role);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
 
     if (!formData.username.trim() || !formData.password) {
       toast.error("Please fill in all fields");
+      setloading(false);
       return;
     }
 
-    setLoading(true);
-    
     try {
-      signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         formData.username,
         formData.password
-      ).then((result) => {
-        const user = result.user;
-        toast.success(
-          `Welcome ${user.email}! You are signed in as ${activeRole}.`,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            onClose: () => {
-              navigate("/Clinic-Management/dashboard");
-            },
-          }
-        );
-      });
-
+      );
       dispatch(
         setCredentials({
           username: formData.username,
@@ -63,20 +46,22 @@ const Signin = () => {
           isAuthenticated: true,
         })
       );
+
+      toast.success(
+        `Welcome ${formData.username}! you are signed in as activeRole`,
+        {
+          autoClose: 1000,
+          onClose: () => {
+            navigate("/Clinic-Management/dashboard");
+          },
+        }
+      );
     } catch (error) {
       toast.error(`Error: ${error.message}`);
       console.error("Error signing up:", error);
     } finally {
-      setLoading(false);
-      setFormData({
-        username: "",
-        password: ""
-      })
+      setloading(false);
     }
-  };
-
-  const handleRoleChange = (role) => {
-    setActiveRole(role);
   };
 
   return (
@@ -154,15 +139,15 @@ const Signin = () => {
             type="submit"
           >
             {loading
-              ? "Sign In..."
-              : `Sign In As ${
+              ? "Login..."
+              : `Login As ${
                   activeRole.charAt(0).toUpperCase() + activeRole.slice(1)
                 }`}
           </button>
         </form>
         <ToastContainer />
         <p className="text-center mt-4 font-semibold">
-          If you have not registered yet, please
+          If you haven't any account, please{" "}
           <Link
             to={"/"}
             className="text-blue-400 font-semibold hover:text-shadow-blue-800 transition duration-300"
@@ -171,24 +156,6 @@ const Signin = () => {
           </Link>
           .
         </p>
-        <div className="flex justify-center mt-5">
-          <button>
-            <img
-              src="https://cdn3.iconfinder.com/data/icons/logos-brands-3/24/logo_brand_brands_logos_google-1024.png"
-              alt="Google"
-              // onClick={handleGoogleSignUp}
-              className="w-10 h-10 ml-2 border-2 rounded-full p-2 hover:scale-110 hover:shadow-2xl hover:p-1 transition duration-300"
-            />
-          </button>
-          <button>
-            <img
-              src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-social-github-1024.png"
-              alt="GitHub"
-              className="w-10 h-10 ml-2 border-2 rounded-full p-2 hover:scale-110 hover:shadow-2xl hover:p-1 transition duration-300"
-              // onClick={handleGithubSignUp}
-            />
-          </button>
-        </div>
       </div>
     </div>
   );

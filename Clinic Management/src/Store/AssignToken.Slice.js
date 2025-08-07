@@ -28,6 +28,7 @@ const AssignTokenSlice = createSlice({
         TokenNumber,
         date: new Date().toLocaleDateString(),
         time: new Date(Date.now()).toLocaleTimeString(),
+        active: true,
       };
 
       state.token.push(Data);

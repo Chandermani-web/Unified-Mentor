@@ -4,9 +4,10 @@
     import { getDatabase, ref, set } from "firebase/database";
     import { toast, ToastContainer } from "react-toastify";
     import "react-toastify/dist/ReactToastify.css";
+    import { app } from "../Firebase/Firebase.js";
 
     const auth = getAuth();
-    const db = getDatabase();
+    const db = getDatabase(app);
 
     const defaultDoctorFields = {
     fullName: "",
@@ -53,7 +54,7 @@
             setLoading(false);
             return;
             }
-            await set(ref(db, `doctors/${user.uid}`), {
+            await set(ref(db, `doctors/${doctorData.fullName}(${doctorData.licenseNumber})`), {
             uid: user.uid,
             email: user.email,
             role,
@@ -71,7 +72,7 @@
             setLoading(false);
             return;
             }
-            await set(ref(db, `receptionists/${user.uid}`), {
+            await set(ref(db, `receptionists/${receptionistData.fullName}(${doctorData.licenseNumber})`), {
             uid: user.uid,
             email: user.email,
             role,
@@ -84,6 +85,7 @@
         }
 
         toast.success("Profile saved!", {
+            autoClose: 1000,
             onClose: () => {
             navigate("/Clinic-Management/dashboard");
             },
