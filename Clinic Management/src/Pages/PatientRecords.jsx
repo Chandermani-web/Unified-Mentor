@@ -46,15 +46,15 @@ const PatientRecords = () => {
   return (
     <div className="flex justify-center h-screen">
       <div className="flex flex-col py-10 xl:w-[70%]">
-        <h1 className="text-3xl text-black font-bold">Patient Records</h1>
-        <p className="text-zinc-400">
+        <h1 className="text-2xl text-black font-bold">Patient Records</h1>
+        <p className="text-zinc-400 text-xs">
           Manage patient information, visit history, and prescriptions.
         </p>
 
         <div className="bg-white w-full mt-10 border-1 border-gray-300 p-4 rounded-sm flex flex-col gap-2">
           <div className="">
             <h1 className="text-xl font-semibold"><i className="ri-file-text-line"></i>Patient Database</h1>
-            <p className="text-zinc-400 text-sm">
+            <p className="text-zinc-400 text-xs">
               View and manage patient information
             </p>
           </div>
@@ -95,15 +95,15 @@ const PatientRecords = () => {
             {filteredPatients.map((patient, index) => (
               <div key={index}>
                 <hr className="text-gray-500" />
-                <div className="flex items-baseline py-5 text-xs font-semibold">
+                <div className="flex items-baseline py-2 text-xs font-semibold">
                   <h3 className="flex-1">{patient.patientname}</h3>
                   <h3 className="flex-1">{patient.patientage}</h3>
                   <h3 className="flex-1">{patient.patientphone}</h3>
                   <h3 className="flex-1">{patient.date}</h3>
-                  <h3 className="flex-1">{patient.patientsymptoms}</h3>
+                  <h3 className="flex-1 line-clamp-1">{patient.patientsymptoms}</h3>
                   {patient.active ? (
                     <h3
-                      className="bg-green-600 text-white p-1 cursor-pointer"
+                      className="bg-green-600 text-white p-2 cursor-pointer ml-2 rounded-2xl hover:bg-blue-600 hover:text-white transition duration-300"
                       onClick={() =>
                         changestatus("InActive", patient.TokenNumber, patient.patientname)
                       }
@@ -112,7 +112,7 @@ const PatientRecords = () => {
                     </h3>
                   ) : (
                     <h3
-                      className="bg-gray-400 text-black p-1 cursor-pointer"
+                      className="bg-gray-400 text-black p-2 cursor-pointer rounded-2xl hover:bg-gray-600 hover:text-white transition duration-300"
                       onClick={() =>
                         changestatus("Active", patient.TokenNumber, patient.patientname)
                       }

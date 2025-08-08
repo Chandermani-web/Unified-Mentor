@@ -33,6 +33,8 @@ const CreateBill = () => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [additionalNotes, setAdditionalNotes] = useState("");
 
+  // Next Date
+  const [nextdate, setNextDate] = useState("")
   const [saving, setSaving] = useState(false);
 
   // Derived calculations
@@ -124,6 +126,7 @@ const CreateBill = () => {
         totalAmount,
         paymentMethod,
         additionalNotes,
+        nextdate,
         billDate: new Date().toLocaleDateString(),
         billTime: new Date().toLocaleTimeString(),
         billNumber: `${TokenNumber}`,
@@ -154,8 +157,8 @@ const CreateBill = () => {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col py-10 xl:w-[80%]">
-        <h1 className="text-3xl font-bold ">Create Bill</h1>
-        <p className="text-gray-400">
+        <h1 className="text-2xl font-bold ">Create Bill</h1>
+        <p className="text-gray-400 text-xs">
           Generate bills for patient consultations and medicines
         </p>
 
@@ -167,7 +170,7 @@ const CreateBill = () => {
                 <i className="ri-money-dollar-box-line font-light text-blue-500 "></i>
                 Bill Details
               </h1>
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 text-xs">
                 Generate bills for patient consultations and medicines
               </p>
             </div>
@@ -397,6 +400,26 @@ const CreateBill = () => {
                     onChange={(e) => setAdditionalNotes(e.target.value)}
                   ></textarea>
                 </div>
+              </div>
+
+              <hr className="text-gray-300"/>
+
+              <h1 className="font-semibold"><i className="ri-calendar-2-line"></i>Follow-up Schedule</h1>
+              <div className="flex-1 flex flex-col gap-3">
+                <label
+                  htmlFor="next-checkup-date"
+                  className="text-xs p-1 font-semibold"
+                >
+                  Next Checkup After (Days)
+                </label>
+                <select name="next-checkup-date" id="next-checkup-date" className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300" value={nextdate} onChange={(e)=>setNextDate(e.target.value)}>
+                  <option value="No Required">No Required</option>
+                  <option value="3 days">3 Days</option>
+                  <option value="1 Week">1 Week</option>
+                  <option value="2 Week">2 Week</option>
+                  <option value="3 Week">3 Week</option>
+                  <option value="4 Week">4 Week</option>
+                </select>
               </div>
 
               <button

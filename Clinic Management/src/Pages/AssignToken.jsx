@@ -64,8 +64,8 @@ const AssignToken = () => {
   return (
     <div className="flex justify-center h-screen">
       <div className="flex flex-col py-10 xl:w-[70%]">
-        <h1 className="text-3xl text-black font-bold">Assign Patient Token</h1>
-        <p className="text-zinc-400">
+        <h1 className="text-2xl text-black font-bold">Assign Patient Token</h1>
+        <p className="text-zinc-400 text-xs">
           Register new patients and assign them consultation tokens
         </p>
         <div className="mt-10 gap-5 flex">
@@ -75,7 +75,7 @@ const AssignToken = () => {
               <h1 className="text-xl font-semibold">
                 <i className="ri-coupon-2-line text-blue-500"></i> New Token Assignment
               </h1>
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 text-xs">
                 Fill in patient details to assign a new consultation token
               </p>
             </div>
