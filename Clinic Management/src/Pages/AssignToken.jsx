@@ -28,7 +28,7 @@ const AssignToken = () => {
   const database = getDatabase(app);
   const dispatch = useDispatch();
 
-  const TokenNumber = tokenlist.length ? tokenlist.length + 1 : 1;
+  const TokenNumber = String(tokenlist.length ? tokenlist.length + 1 : 1).padStart(3, '0');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

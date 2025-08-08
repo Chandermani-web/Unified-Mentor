@@ -27,12 +27,7 @@ const Dashboard = () => {
 
   const todayDate = new Date().toLocaleDateString();
 
-  const tomorrowDate = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toLocaleDateString();
-  })();
-
+  // Doctor Dashboard
   const filteredPatients = Patients.filter((patient) => {
     const namematch = patient.patientname
       ?.toLowerCase()
@@ -41,8 +36,6 @@ const Dashboard = () => {
     let dateMatch = true;
     if (dateFilter === "today") {
       dateMatch = patient.date === todayDate;
-    } else if (dateFilter === "tomorrow") {
-      dateMatch = patient.date === tomorrowDate;
     }
 
     return namematch && dateMatch;
@@ -66,6 +59,16 @@ const Dashboard = () => {
       toast.error(`❌ ${error.message}`);
     }
   };
+
+  // Receptionist Dashboard
+
+  const FilterPatients = TodayPatients.filter((patient) => {
+    const namematch = 
+    patient.active === true &&
+    patient.patientname?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    return namematch;
+  });
 
   return (
     <div className="flex justify-center">
@@ -127,6 +130,7 @@ const Dashboard = () => {
 
         <div className="bg-white w-full mt-10 border-1 border-gray-300 p-4 rounded-2xl">
           {UserActiveRole === "doctor" ? (
+            // Doctor Dashboard
             <div className="flex flex-col gap-2">
               <div>
                 <h1 className="text-xl font-semibold">Recent Patients</h1>
@@ -166,7 +170,7 @@ const Dashboard = () => {
                       {/* Left panel */}
                       <div className="flex flex-col gap-1">
                         {/* left-top panel */}
-                        <div className="flex">
+                        <div className="flex gap-3">
                           <span className="px-5 py-3 text-sm bg-blue-50 text-blue-600 rounded-[50%] text-center font-bold">
                             {patient.patientname[0]}
                           </span>
@@ -227,7 +231,69 @@ const Dashboard = () => {
               </div>
             </div>
           ) : (
-            <div></div>
+            // Receptionist Dashboard
+            <div className="flex flex-col gap-2">
+              <div>
+                <h1 className="text-xl font-semibold">Patient Tokens</h1>
+                <p className="text-zinc-400 text-xs">
+                  Manage today's patient tokens
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <div className="flex-1 flex gap-4 border-1 border-gray-400 bg-gray-100 rounded-sm p-2">
+                    <i className="ri-search-line text-gray-400"></i>
+                    <input
+                      type="text"
+                      placeholder="search patient by name..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="outline-0 bg-transparent w-full capitalize"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  {FilterPatients.map((patient, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between p-3 border-1 border-gray-300 rounded-sm items-center"
+                    >
+                      {/* Left panel */}
+                      <div className="flex flex-col gap-1">
+                        {/* left-top panel */}
+                        <div className="flex gap-2">
+                          <span className="w-12 py-3 text-sm bg-blue-50 text-blue-600 text-center font-bold">
+                            {patient.TokenNumber}
+                          </span>
+                          <div>
+                            <h2 className="text-sm capitalize">
+                              {patient.patientname}
+                            </h2>
+                            <p className="text-xs text-gray-400">
+                              {patient.time}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right panel */}
+                      <div className="">
+                        {patient.active ? (
+                          <h1 className="bg-gray-300 text-black font-semibold text-xs py-1 px-4 rounded-2xl text-center cursor-pointer">
+                            Waiting
+                          </h1>
+                        ) : (
+                          false
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <ToastContainer />
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
