@@ -156,15 +156,15 @@ const CreateBill = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col py-10 xl:w-[80%]">
+      <div className="flex flex-col py-10 xl:w-[80%] gap-6">
         <h1 className="text-2xl font-bold ">Create Bill</h1>
         <p className="text-gray-400 text-xs">
           Generate bills for patient consultations and medicines
         </p>
 
-        <div className="flex flex-row gap-5 mt-10">
+        <div className="flex flex-row gap-6 mt-2">
           {/* Left Panel */}
-          <div className="border border-gray-300 bg-white w-2/3 rounded-xl p-5">
+          <div className="border border-gray-200 bg-white w-2/3 rounded-xl p-5 shadow-sm">
             <div>
               <h1 className="text-2xl font-semibold">
                 <i className="ri-money-dollar-box-line font-light text-blue-500 "></i>
@@ -193,7 +193,7 @@ const CreateBill = () => {
                     type="text"
                     id="patientname"
                     placeholder="Enter Patient Name"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     required
                     value={patientName}
                     onChange={(e) => setPatientName(e.target.value)}
@@ -210,7 +210,7 @@ const CreateBill = () => {
                     type="text"
                     id="patientid"
                     placeholder="Enter Patient Id"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     required
                     value={patientId}
                     onChange={(e) => setPatientId(e.target.value)}
@@ -235,7 +235,7 @@ const CreateBill = () => {
                   type="number"
                   id="consultation"
                   placeholder="Enter consultation fee"
-                  className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                  className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                   required
                   value={consultationFee}
                   onChange={(e) => setConsultationFee(e.target.value)}
@@ -246,7 +246,7 @@ const CreateBill = () => {
 
               {/* Medicines */}
               <h1 className="font-semibold">Medicines</h1>
-              <div className=" flex-1 grid grid-cols-4 p-2 gap-5 items-end bg-gray-100 rounded-sm border-1 border-gray-300">
+              <div className=" flex-1 grid grid-cols-4 p-3 gap-5 items-end bg-gray-50 rounded-xl border border-gray-200">
                 <div className=" flex-1 flex flex-col gap-1">
                   <label
                     htmlFor="medicinename"
@@ -258,7 +258,7 @@ const CreateBill = () => {
                     type="text"
                     id="medicinename"
                     placeholder="Medicine Name"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-white py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     value={medicineInput.name}
                     onChange={(e) =>
                       handleMedicineInputChange("name", e.target.value)
@@ -276,7 +276,7 @@ const CreateBill = () => {
                     type="number"
                     id="Quantity"
                     placeholder="Quantity"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-white py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     value={medicineInput.quantity}
                     onChange={(e) =>
                       handleMedicineInputChange("quantity", e.target.value)
@@ -293,7 +293,7 @@ const CreateBill = () => {
                     id="Rate"
                     min={1}
                     placeholder="Rate"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-white py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     value={medicineInput.rate}
                     onChange={(e) =>
                       handleMedicineInputChange("rate", e.target.value)
@@ -303,7 +303,7 @@ const CreateBill = () => {
                 <div className="flex-1">
                   <button
                     onClick={addMedicine}
-                    className="ri-add-line bg-blue-600 w-full flex justify-center py-1 rounded-sm text-white"
+                    className="ri-add-line bg-blue-600 w-full flex justify-center py-2 rounded-lg text-white hover:bg-blue-700 transition"
                   >
                     {" "}
                     Add
@@ -317,7 +317,7 @@ const CreateBill = () => {
                   {medicines.map((med, index) => (
                     <div
                       key={index}
-                      className="flex justify-between items-center bg-gray-50 p-2 rounded border"
+                      className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200 shadow-sm"
                     >
                       <div className="flex-1 flex gap-4 justify-between items-center">
                         <span className="text-sm font-medium">{med.name}</span>
@@ -329,7 +329,7 @@ const CreateBill = () => {
                       </div>
                       <button
                         onClick={() => deleteMedicine(index)}
-                        className="text-amber-100 hover:text-red-700 px-3 py-1 ml-10 bg-red-500 rounded-sm"
+                        className="text-white hover:bg-red-600 px-3 py-1 ml-10 bg-red-500 rounded-lg"
                       >
                         <i className="ri-delete-bin-line"></i>
                       </button>
@@ -355,7 +355,7 @@ const CreateBill = () => {
                       type="number"
                       id="Discount(%)"
                       placeholder="0"
-                      className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                      className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                       required
                       value={discountPercent}
                       onChange={(e) => setDiscountPercent(e.target.value)}
@@ -371,7 +371,7 @@ const CreateBill = () => {
                     <select
                       name="payment-method"
                       id="payment-method"
-                      className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border text-lg border-gray-300"
+                      className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border text-sm border-gray-200 focus:border-blue-500"
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                     >
@@ -395,7 +395,7 @@ const CreateBill = () => {
                     cols={60}
                     rows={4}
                     placeholder="Any additional notes or remarks"
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                     value={additionalNotes}
                     onChange={(e) => setAdditionalNotes(e.target.value)}
                   ></textarea>
@@ -404,7 +404,7 @@ const CreateBill = () => {
 
               <hr className="text-gray-300"/>
 
-              <h1 className="font-semibold"><i className="ri-calendar-2-line"></i>Follow-up Schedule</h1>
+              <h1 className="font-semibold"><i className="ri-calendar-2-line"></i> Follow-up Schedule</h1>
               <div className="flex-1 flex flex-col gap-3">
                 <label
                   htmlFor="next-checkup-date"
@@ -412,7 +412,7 @@ const CreateBill = () => {
                 >
                   Next Checkup After (Days)
                 </label>
-                <select name="next-checkup-date" id="next-checkup-date" className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300" value={nextdate} onChange={(e)=>setNextDate(e.target.value)}>
+                <select name="next-checkup-date" id="next-checkup-date" className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500" value={nextdate} onChange={(e)=>setNextDate(e.target.value)}>
                   <option value="No Required">No Required</option>
                   <option value="3 days">3 Days</option>
                   <option value="1 Week">1 Week</option>
@@ -425,7 +425,7 @@ const CreateBill = () => {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-400 p-1 rounded-sm text-white text-sm hover:bg-blue-700 transition duration-300"
+                className="bg-blue-600 py-2 px-3 rounded-lg text-white text-sm hover:bg-blue-700 transition"
               >
                 <i className="ri-money-dollar-box-line font-light "></i>{" "}
                 {saving ? "Generating..." : "Generate Bill"}
@@ -434,7 +434,7 @@ const CreateBill = () => {
           </div>
 
           {/* Right Panel */}
-          <div className="xl:w-[30%] h-[40%] p-5 flex flex-col border-1 rounded-2xl border-gray-300">
+          <div className="xl:w-[30%] p-5 flex flex-col border rounded-2xl border-gray-200 bg-white shadow-sm h-max">
             {/* Top panel */}
             <div>
               <h1 className="text-xl font-semibold">
@@ -460,13 +460,13 @@ const CreateBill = () => {
                 <hr className="text-gray-400" />
                 <div className="flex justify-between">
                   <h1 className="font-semibold">Total Amount</h1>
-                  <h1 className="font-semibold text-blue-600">{totalAmount.toFixed(2)}</h1>
+                  <h1 className="font-semibold text-blue-600">₹{totalAmount.toFixed(2)}</h1>
                 </div>
               </div>
             </div>
 
             {/* bottom panel */}
-            <div className="bg-gray-100 rounded-xl p-3 mt-4">
+            <div className="bg-gray-50 rounded-xl p-3 mt-4 border border-gray-200">
               <h2 className="mb-2 font-semibold">Bill Information</h2>
               <div className="flex justify-between">
                 <p className="text-sm text-gray-500">Bill Date:</p>

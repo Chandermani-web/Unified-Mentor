@@ -62,15 +62,15 @@ const AssignToken = () => {
   };
 
   return (
-    <div className="flex justify-center h-screen">
-      <div className="flex flex-col py-10 xl:w-[70%]">
+    <div className="flex justify-center">
+      <div className="flex flex-col py-10 xl:w-[80%] gap-6">
         <h1 className="text-2xl text-black font-bold">Assign Patient Token</h1>
         <p className="text-zinc-400 text-xs">
           Register new patients and assign them consultation tokens
         </p>
-        <div className="mt-10 gap-5 flex">
+        <div className="mt-2 gap-6 flex">
           {/* Left Panel */}
-          <div className="border border-gray-300 bg-white w-2/3 rounded-xl p-5">
+          <div className="border border-gray-200 bg-white w-2/3 rounded-xl p-5 shadow-sm">
             <div>
               <h1 className="text-xl font-semibold">
                 <i className="ri-coupon-2-line text-blue-500"></i> New Token Assignment
@@ -118,7 +118,7 @@ const AssignToken = () => {
                     }
                     placeholder={field.placeholder}
                     required
-                    className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300"
+                    className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500"
                   />
                 </div>
               ))}
@@ -138,7 +138,7 @@ const AssignToken = () => {
                       patientpriority: e.target.value,
                     })
                   }
-                  className="bg-zinc-100 text-sm py-1 rounded-sm outline-0 border border-gray-300"
+                  className="bg-gray-50 text-sm py-2 px-3 rounded-lg outline-0 border border-gray-200 focus:border-blue-500"
                   required
                 >
                   <option value="Normal">Normal</option>
@@ -163,13 +163,13 @@ const AssignToken = () => {
                     })
                   }
                   placeholder="Describe the symptoms or reason for consultation"
-                  className="bg-zinc-100 py-1 px-3 rounded-sm placeholder:text-zinc-500 outline-0 placeholder:text-[12px] z-auto border border-gray-300 h-24"
+                  className="bg-gray-50 py-2 px-3 rounded-lg placeholder:text-zinc-500 outline-0 placeholder:text-[12px] border border-gray-200 focus:border-blue-500 h-24"
                   required
                 ></textarea>
               </div>
 
               {/* Token Info */}
-              <div className="col-span-2 flex flex-col justify-between gap-3 p-2 bg-zinc-100 rounded-sm border-1 border-gray-300 font-semibold">
+              <div className="col-span-2 flex flex-col justify-between gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 font-semibold">
                 <h1 className="text-sm">Token Information</h1>
                 <div className="flex justify-between px-6">
                   <p className="text-sm text-gray-400">
@@ -189,7 +189,7 @@ const AssignToken = () => {
               <div className="col-span-2">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white w-full px-2 rounded-sm hover:bg-blue-600 transition duration-200"
+                  className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700 transition"
                 >
                   <i className="ri-coupon-2-line mr-4"></i> Assign Token
                 </button>
@@ -199,7 +199,7 @@ const AssignToken = () => {
           </div>
 
           {/* Right Panel: Today's Tokens */}
-          <div className="border border-gray-300 rounded-xl bg-white w-1/3 p-4 overflow-auto h-[500px]">
+          <div className="border border-gray-200 rounded-xl bg-white w-1/3 p-4 overflow-auto h-[500px] shadow-sm">
             <div>
               <h1 className="text-xl text-black font-semibold">
                 <i className="ri-time-line text-blue-600"></i> Today's Tokens
@@ -214,7 +214,7 @@ const AssignToken = () => {
                 tokenList.map((token, index) => (
                   <div
                     key={index}
-                    className="flex justify-between items-center p-2 border-1 border-gray-200 rounded-2xl mb-2"
+                    className="flex justify-between items-center p-2 border border-gray-200 rounded-2xl mb-2 hover:bg-gray-50 transition"
                   >
                     <div>
                       <h1 className="font-semibold text-blue-700">

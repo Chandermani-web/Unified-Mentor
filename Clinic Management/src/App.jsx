@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./Components/Navbar";
+import Navbar from "./Components/Navbar.jsx";
+import Footer from "./Components/Footer.jsx";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { app } from "./Firebase/Firebase.js";
 import Signup from './Pages/Signup.jsx';
@@ -34,6 +35,7 @@ const App = () => {
       <div>
         <Navbar />
         <Outlet  />
+        <Footer />
       </div>
   );
 };

@@ -1,7 +1,30 @@
 import { toast, ToastContainer } from "react-toastify";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import useFetchTokens from "../Utils/FetchAllToken.js";
 import { getDatabase, ref, update } from "firebase/database";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
 
 const db = getDatabase();
 
@@ -9,6 +32,66 @@ const PatientRecords = () => {
   const tokenList = useFetchTokens();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  const totalPatients = tokenList.length;
+  const activeCount = tokenList.filter((p) => p.active).length;
+  const inactiveCount = totalPatients - activeCount;
+
+  const last7Days = useMemo(() => {
+    const days = [];
+    const formatter = new Intl.DateTimeFormat(undefined);
+    for (let i = 6; i >= 0; i -= 1) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      days.push(formatter.format(d));
+    }
+    return days;
+  }, []);
+
+  const tokensPerDay = useMemo(() => {
+    const counts = last7Days.map((d) =>
+      tokenList.filter((t) => t.date === d).length
+    );
+    return counts;
+  }, [last7Days, tokenList]);
+
+  const barData = useMemo(
+    () => ({
+      labels: last7Days,
+      datasets: [
+        {
+          label: "Patients (last 7 days)",
+          data: tokensPerDay,
+          backgroundColor: "rgba(37, 99, 235, 0.6)",
+          borderRadius: 10,
+        },
+      ],
+    }),
+    [last7Days, tokensPerDay]
+  );
+
+  const barOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: "#f4f4f5" }, ticks: { stepSize: 1, precision: 0 } },
+    },
+  };
+
+  const statusData = {
+    labels: ["Active", "Inactive"],
+    datasets: [
+      {
+        data: [activeCount, inactiveCount],
+        backgroundColor: ["#16a34a", "#9ca3af"],
+        borderWidth: 0,
+      },
+    ],
+  };
 
   const filteredPatients = tokenList.filter((patient) => {
     const namematch = patient.patientname
@@ -44,86 +127,135 @@ const PatientRecords = () => {
   };
 
   return (
-    <div className="flex justify-center h-screen">
-      <div className="flex flex-col py-10 xl:w-[70%]">
-        <h1 className="text-2xl text-black font-bold">Patient Records</h1>
-        <p className="text-zinc-400 text-xs">
-          Manage patient information, visit history, and prescriptions.
-        </p>
+    <div className="flex justify-center">
+      <div className="flex flex-col py-10 xl:w-[80%] gap-6">
+        <div>
+          <h1 className="text-2xl text-black font-bold">Patient Records</h1>
+          <p className="text-zinc-400 text-xs">
+            Manage patient information, visit history, and prescriptions.
+          </p>
+        </div>
 
-        <div className="bg-white w-full mt-10 border-1 border-gray-300 p-4 rounded-sm flex flex-col gap-2">
-          <div className="">
-            <h1 className="text-xl font-semibold"><i className="ri-file-text-line"></i>Patient Database</h1>
-            <p className="text-zinc-400 text-xs">
-              View and manage patient information
-            </p>
-          </div>
-          <div className="flex justify-between gap-3">
-            <div className="flex-1 flex gap-4 border-1 border-gray-400 bg-gray-100 rounded-sm p-2">
-              <i className="ri-search-line text-gray-400"></i>
-              <input
-                type="text"
-                placeholder="search patient by name..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="outline-0 bg-transparent w-full capitalize"
-              />
-            </div>
-            <div className=" border-1 border-gray-400 p-2 bg-gray-100 rounded-sm text-gray-600 flex gap-2">
-              <i className="ri-filter-line"></i>
-              <select
-                className="outline-0"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All</option>
-                <option value="active">Active</option>
-                <option value="inactive">InActive</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between py-5 text-gray-500 text-xs font-semibold">
-              <h3 className="flex-1">Patient Name</h3>
-              <h3 className="flex-1">Age</h3>
-              <h3 className="flex-1">Phone</h3>
-              <h3 className="flex-1">Last Visit</h3>
-              <h3 className="flex-1">Condition</h3>
-              <h3 className="">Status</h3>
-            </div>
-            {filteredPatients.map((patient, index) => (
-              <div key={index}>
-                <hr className="text-gray-500" />
-                <div className="flex items-baseline py-2 text-xs font-semibold">
-                  <h3 className="flex-1">{patient.patientname}</h3>
-                  <h3 className="flex-1">{patient.patientage}</h3>
-                  <h3 className="flex-1">{patient.patientphone}</h3>
-                  <h3 className="flex-1">{patient.date}</h3>
-                  <h3 className="flex-1 line-clamp-1">{patient.patientsymptoms}</h3>
-                  {patient.active ? (
-                    <h3
-                      className="bg-green-600 text-white p-2 cursor-pointer ml-2 rounded-2xl hover:bg-blue-600 hover:text-white transition duration-300"
-                      onClick={() =>
-                        changestatus("InActive", patient.TokenNumber, patient.patientname)
-                      }
-                    >
-                      Active
-                    </h3>
-                  ) : (
-                    <h3
-                      className="bg-gray-400 text-black p-2 cursor-pointer rounded-2xl hover:bg-gray-600 hover:text-white transition duration-300"
-                      onClick={() =>
-                        changestatus("Active", patient.TokenNumber, patient.patientname)
-                      }
-                    >
-                      Inactive
-                    </h3>
-                  )}
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { label: "Total Patients", value: totalPatients, icon: "ri-group-line", color: "from-blue-500 to-indigo-500" },
+            { label: "Active", value: activeCount, icon: "ri-play-circle-line", color: "from-emerald-500 to-green-600" },
+            { label: "Inactive", value: inactiveCount, icon: "ri-pause-circle-line", color: "from-gray-400 to-gray-500" },
+          ].map((kpi, idx) => (
+            <div key={idx} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-500">{kpi.label}</p>
+                  <p className="mt-1 text-2xl font-bold">{kpi.value}</p>
                 </div>
-                <ToastContainer />
+                <div className={`p-3 rounded-full bg-gradient-to-br ${kpi.color} text-white`}>
+                  <i className={`${kpi.icon} text-xl`}></i>
+                </div>
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-800">Patients Trend (7 days)</h3>
+            </div>
+            <Bar data={barData} options={barOptions} height={120} />
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-800">Status Split</h3>
+            </div>
+            <div className="h-[220px] flex items-center justify-center">
+              <Doughnut data={statusData} />
+            </div>
+          </div>
+        </div>
+
+        {/* Records Table */}
+        <div className="bg-white w-full mt-2 border border-gray-200 p-4 rounded-xl flex flex-col gap-4 shadow-sm">
+          <div className="flex items-start justify-between gap-3 flex-col md:flex-row">
+            <div>
+              <h1 className="text-lg font-semibold"><i className="ri-file-text-line"></i> Patient Database</h1>
+              <p className="text-zinc-500 text-xs">View and manage patient information</p>
+            </div>
+            <div className="flex w-full md:w-auto gap-3">
+              <div className="flex-1 flex gap-3 border border-gray-300 bg-gray-50 rounded-lg p-2">
+                <i className="ri-search-line text-gray-400"></i>
+                <input
+                  type="text"
+                  placeholder="Search patient by name..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="outline-0 bg-transparent w-full capitalize"
+                />
+              </div>
+              <div className="border border-gray-300 px-3 py-2 bg-gray-50 rounded-lg text-gray-700 flex gap-2 items-center">
+                <i className="ri-filter-line"></i>
+                <select
+                  className="outline-0 bg-transparent"
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <div className="min-w-[720px]">
+              <div className="grid grid-cols-6 py-3 text-gray-500 text-[11px] font-semibold">
+                <h3 className="">Patient Name</h3>
+                <h3 className="">Age</h3>
+                <h3 className="">Phone</h3>
+                <h3 className="">Last Visit</h3>
+                <h3 className="">Condition</h3>
+                <h3 className="text-right">Status</h3>
+              </div>
+              <hr className="border-gray-200" />
+              {filteredPatients.map((patient, index) => (
+                <div key={index} className="">
+                  <div className="grid grid-cols-6 items-center py-3 text-xs font-semibold">
+                    <h3 className="truncate capitalize">{patient.patientname}</h3>
+                    <h3>{patient.patientage}</h3>
+                    <h3 className="truncate">{patient.patientphone}</h3>
+                    <h3>{patient.date}</h3>
+                    <h3 className="truncate">{patient.patientsymptoms}</h3>
+                    <div className="text-right">
+                      {patient.active ? (
+                        <button
+                          className="inline-flex items-center gap-1 bg-emerald-600 text-white py-1 px-3 cursor-pointer rounded-2xl hover:bg-emerald-700 transition"
+                          onClick={() =>
+                            changestatus("InActive", patient.TokenNumber, patient.patientname)
+                          }
+                        >
+                          <span className="h-2 w-2 rounded-full bg-white"></span>
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="inline-flex items-center gap-1 bg-gray-300 text-gray-800 py-1 px-3 cursor-pointer rounded-2xl hover:bg-gray-400 transition"
+                          onClick={() =>
+                            changestatus("Active", patient.TokenNumber, patient.patientname)
+                          }
+                        >
+                          <span className="h-2 w-2 rounded-full bg-gray-800"></span>
+                          Inactive
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <hr className="border-gray-100" />
+                </div>
+              ))}
+              <ToastContainer />
+            </div>
           </div>
         </div>
       </div>
