@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Countdown Timer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Countdown Timer</h1>
+        <p class="subtitle">Set your target date and time</p>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" class="input-field">
+            </div>
+            <div class="input-group">
+                <label for="time">Time</label>
+                <input type="time" id="time" class="input-field">
+            </div>
+            
+            <div class="button-group">
+                <button id="startBtn" class="btn primary">Start</button>
+                <button id="stopBtn" class="btn secondary" disabled>Pause</button>
+                <button id="resetBtn" class="btn tertiary" disabled>Reset</button>
+            </div>
+        </div>
+
+        <div class="countdown">
+            <div class="countdown-item">
+                <span id="days" class="countdown-value">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span id="hours" class="countdown-value">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span id="minutes" class="countdown-value">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span id="seconds" class="countdown-value">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+
+        <p id="message" class="message"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
