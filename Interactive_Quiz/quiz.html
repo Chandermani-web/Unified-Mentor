@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz - Test Your Knowledge</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">Interactive Quiz</h1>
+            <p class="quiz-subtitle">Test your knowledge with our challenging questions!</p>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer" id="timer">
+                <span>⏰</span>
+                <span id="timeLeft">30</span>
+                <span>seconds left</span>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form class="quiz-form" id="quizForm">
+            <div class="question-container" id="questionContainer">
+                <div class="question-number" id="questionNumber">Question 1 of 7</div>
+                <h2 class="question-text" id="questionText"></h2>
+                <div class="options-container" id="optionsContainer"></div>
+            </div>
+
+            <div class="button-container">
+                <button type="button" class="btn btn-primary" id="nextBtn" disabled>Next Question</button>
+                <button type="button" class="btn btn-secondary" id="submitBtn" style="display: none;">Submit Quiz</button>
+            </div>
+        </form>
+
+        <div class="quiz-complete" id="quizComplete">
+            <div class="result-container" id="resultContainer">
+                <h2 class="result-title">Quiz Complete!</h2>
+                <div class="score-display" id="scoreDisplay">0/7</div>
+                <p class="score-message" id="scoreMessage"></p>
+                <button type="button" class="btn btn-primary" id="restartBtn">Take Quiz Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
